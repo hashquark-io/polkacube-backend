@@ -8,25 +8,31 @@ class ValidatorsService extends Service {
   _totalNominatorsBonded(nominators) {
     return (nominators.reduce((sum, cur) => new BN(sum).add(new BN(cur.value)), 0)).toString();
   }
+
+  _nominatorsBondedPercent(nominator, nominatorsBonded) {
+    nominator.percent = new BN(nominator.value).muln(10000).div(new BN(nominatorsBonded))
+      .toNumber() / 100;
+  }
+
   async findAll() {
-    // find the last era of validators 
+    // find the last era of validators
     const validators = await this.app.mysql.query('select * from ksm_validator where currentSession = (select currentSession from ksm_validator order by id desc limit 1)');
     // find the last block
     const blocks = await this.app.mysql.query('select * from ksm_author order by id desc');
-    const validatorsMap = new Map(validators.map((validator) => {
+    const validatorsMap = new Map(validators.map(validator => {
       if (validator.nominators) {
         validator.nominators = JSON.parse(validator.nominators);
         validator.nominatorsBonded = this._totalNominatorsBonded(validator.nominators);
       }
-      return [validator.validatorAddr, validator];
+      return [ validator.validatorAddr, validator ];
     }));
-    blocks.forEach((block) => {
+    blocks.forEach(block => {
       const validator = validatorsMap.get(block.authorAddr);
       if (validator) {
         validator.height = block.lastBlockHeight;
       }
     });
-    return [...validatorsMap.values()];
+    return [ ...validatorsMap.values() ];
   }
 
   async findByAccountId(accountId) {
@@ -35,9 +41,9 @@ class ValidatorsService extends Service {
     if (validators.length > 0) {
       const validator = validators[0];
       if (validator.nominators) {
-        let nominators = JSON.parse(validator.nominators);
+        const nominators = JSON.parse(validator.nominators);
         validator.nominatorsBonded = this._totalNominatorsBonded(nominators);
-        nominators.forEach(singel => singel.percent = new BN(singel.value).muln(10000).div(new BN(validator.nominatorsBonded)).toNumber() / 100);
+        nominators.forEach(nominator => this._nominatorsBondedPercent(nominator, validator.nominatorsBonded));
         validator.nominators = nominators;
 
       }

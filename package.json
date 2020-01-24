@@ -21,7 +21,7 @@
         "egg-ci": "^1.11.0",
         "egg-mock": "^3.25.0",
         "egg-scripts": "^2.12.0",
-        "eslint": "^6.8.0",
+        "eslint": "^5.6.1",
         "eslint-config-egg": "^7.1.0"
     },
     "engines": {
@@ -32,11 +32,10 @@
         "stop": "egg-scripts stop --title=server_polkacube",
         "dev": "egg-bin dev --sticky",
         "debug": "egg-bin debug --inpsect=9229",
-        "test": "npm run lint -- --fix && npm run test-local",
-        "test-local": "egg-bin test",
+        "fix": "npm run lint -- --fix",
+        "test": "egg-bin test",
         "cov": "egg-bin cov",
         "lint": "eslint .",
-        "ci": "npm run lint && npm run cov",
         "autod": "autod"
     },
     "ci": {
@@ -47,5 +46,5 @@
         "url": ""
     },
     "author": "hashquark",
-    "license": "MIT"
+    "license": "(MIT OR Apache-2.0)"
 }

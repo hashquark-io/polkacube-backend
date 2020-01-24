@@ -15,7 +15,7 @@ describe('test/app/controller/validators.test.js', () => {
     const result = await app.httpRequest()
       .get('/api/v1/validator/GiBnzCGFofhmAvsUv9FUShUb8YJYYwWex3ThQNkbDDNprS6')
       .expect(200);
-    assert(result.body.length > 0);
+    assert(result.body.id > 0);
   });
 
 });

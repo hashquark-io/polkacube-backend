@@ -1,3 +1,5 @@
+'use strict';
+
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 
 class AppBootHook {
@@ -30,11 +32,11 @@ class AppBootHook {
   async serverDidReady() {
     // http / https server is loaded.
     await this.app.api.derive.chain.subscribeNewHeads(header => {
-      
-      this.app.io.emit('headerChange', { 'height': header.number, 'validatorAddr': header.author });
+
+      this.app.io.emit('headerChange', { height: header.number, validatorAddr: header.author });
     });
     await this.app.api.rpc.chain.subscribeFinalizedHeads(header => {
-      this.app.io.emit('finalizedHeaderChange', { 'height': header.number });
+      this.app.io.emit('finalizedHeaderChange', { height: header.number });
     });
   }
 }

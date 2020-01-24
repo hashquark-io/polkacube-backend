@@ -1,3 +1,4 @@
+'use strict';
 const Controller = require('egg').Controller;
 
 class RewardController extends Controller {

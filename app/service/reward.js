@@ -1,36 +1,37 @@
+'use strict';
 const Service = require('egg').Service;
 
 const { formatBalance } = require('@polkadot/util');
 formatBalance.setDefaults({
-    decimals: 12,
-    unit: 'KSM'
+  decimals: 12,
+  unit: 'KSM',
 });
 
-class SlashService extends Service {
+class RewardService extends Service {
 
-    async find(page, size) {
-        size = size || 100;
-        page = page || 1;
-        size = size > 200 ? 200 : size;
-        let offset = (page * size) - size;
-        let reward = [];
-        if (isNaN(offset)) {
-            return reward;
-        }
-        reward = await this.app.mysql.select('ksm_evt_reward', {
-            orders: [
-                ['height', 'desc'],
-                ['index', 'desc']
-            ],
-            limit: +size,
-            offset: offset
-        })
-        reward = reward.map(obj => {
-            obj.validatorsAmount = formatBalance(obj.validatorsAmount);
-            obj.treasuryAmount = formatBalance(obj.treasuryAmount);
-            return obj;
-        });
-        return reward;
+  async find(page, size) {
+    size = size || 100;
+    page = page || 1;
+    size = size > 200 ? 200 : size;
+    const offset = (page * size) - size;
+    let reward = [];
+    if (isNaN(offset)) {
+      return reward;
     }
+    reward = await this.app.mysql.select('ksm_evt_reward', {
+      orders: [
+        [ 'height', 'desc' ],
+        [ 'index', 'desc' ],
+      ],
+      limit: +size,
+      offset,
+    });
+    reward = reward.map(obj => {
+      obj.validatorsAmount = formatBalance(obj.validatorsAmount);
+      obj.treasuryAmount = formatBalance(obj.treasuryAmount);
+      return obj;
+    });
+    return reward;
+  }
 }
-module.exports = SlashService;
+module.exports = RewardService;

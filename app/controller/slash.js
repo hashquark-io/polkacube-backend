@@ -13,9 +13,10 @@ class SlashController extends Controller {
   }
   async slashCountPageQuery() {
     const { ctx } = this;
-    const res = await ctx.service.slash.slashCountPageQuery(ctx.query.page, ctx.query.size,ctx.query.accountAddr);
+    const res = await ctx.service.slash.slashCountPageQuery(ctx.query.page, ctx.query.size, ctx.query.accountAddr);
     ctx.body = res;
   }
+
 }
 
 module.exports = SlashController;
