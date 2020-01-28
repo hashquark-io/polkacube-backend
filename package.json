@@ -14,8 +14,6 @@
         "egg-socket.io": "^4.1.6"
     },
     "devDependencies": {
-        "autod": "^3.0.1",
-        "autod-egg": "^1.1.0",
         "cross-env": "^6.0.3",
         "egg-bin": "^4.14.1",
         "egg-ci": "^1.11.0",
@@ -35,16 +33,15 @@
         "fix": "npm run lint -- --fix",
         "test": "egg-bin test",
         "cov": "egg-bin cov",
-        "lint": "eslint .",
-        "autod": "autod"
+        "lint": "eslint ."
     },
     "ci": {
         "version": "10"
     },
     "repository": {
-        "type": "git",
-        "url": ""
-    },
+      "type": "git",
+      "url": "https://github.com/hashquark-io/polkacube-backend.git"
+    }, 
     "author": "hashquark",
     "license": "(MIT OR Apache-2.0)"
 }
