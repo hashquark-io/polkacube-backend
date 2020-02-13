@@ -15,7 +15,7 @@
     },
     "devDependencies": {
         "cross-env": "^6.0.3",
-        "egg-bin": "^4.14.1",
+        "egg-bin": "eggjs/egg-bin#deps/nyc",
         "egg-ci": "^1.11.0",
         "egg-mock": "^3.25.0",
         "egg-scripts": "^2.12.0",
@@ -43,5 +43,5 @@
       "url": "https://github.com/hashquark-io/polkacube-backend.git"
     }, 
     "author": "hashquark",
-    "license": "(MIT OR Apache-2.0)"
+    "license": "Apache-2.0"
 }
