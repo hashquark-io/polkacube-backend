@@ -73,4 +73,7 @@ config/config.default.js used to write configuration files.
 config/plugin.js used to configure the plugins that need to be loaded.  
 test/** used for unit test.  
 
+## License
+
+[Apache-2.0](LICENSE)
 
