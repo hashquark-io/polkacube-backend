@@ -5,7 +5,7 @@
 ### Prerequisites
 
 Polkacube projects include job, backend and frontend. This project requires to start [polkacube job project] [https://github.com/hashquark-io/polkacube-job.git](https://github.com/hashquark-io/polkacube-job.git)
-Modify config/config.default.js for configuration, such as ksm ws, mysql host/port/user/password, cors origin and so on.  
+Modify .env configuration, such as substrate server, mysql host/port/user/password and so on.  
 Node version 10+ is required.
 
 ### Setup
@@ -49,7 +49,7 @@ npm test "test/app/controller/*.js"
 
 ## Docker image
 
-Modify config/config.default.js.
+Modify .env configuration
 
 ```bash
 docker build -t polkacube_backend .

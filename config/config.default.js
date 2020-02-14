@@ -2,13 +2,12 @@
 
 'use strict';
 
-// const path = require('path');
+require('dotenv').config('../.env');
 
 // kusama configuration
 const ksm = {
   // The '127.0.0.1' or 'localhost' direct to container host, you must change it when you run in docker.
-  ws: 'ws://127.0.0.1:9944',
-
+  ws: 'ws://' + (process.env.SUBSTRATE_WS_HOST || '127.0.0.1') + ':' + (process.env.SUBSTRATE_WS_PORT || '9944'),
 };
 
 // logger
@@ -26,11 +25,11 @@ const logrotator = {
 const mysql = {
   client: {
     // The '127.0.0.1' or 'localhost' direct to container host, you must change it when you run in docker.
-    host: '127.0.0.1',
-    port: '3306',
-    user: 'root',
-    password: 'root',
-    database: 'hq_polkacube',
+    host: process.env.MYSQL_HOST || '127.0.0.1',
+    port: process.env.MYSQL_PORT || '3306',
+    user: process.env.MYSQL_USERNAME || 'root',
+    password: process.env.MYSQL_PASSWORD || 'root',
+    database: process.env.MYSQL_DATABASE || 'hq_polkacube',
     charset: 'utf8mb4',
   },
 };
