@@ -49,11 +49,35 @@ npm test "test/app/controller/*.js"
 
 ## Docker image
 
-Modify .env configuration
+### Build A Image and Run
+
+> Modify .env configuration
 
 ```bash
 docker build -t polkacube_backend .
-docker run -d -p 7001:7001 polkacube_backend npm run start
+docker run -d -p 7001:7001 polkacube_backend
+```
+
+### Using Image From Docker Hub
+
+```bash
+# Write .env file on your host
+# ==========================
+## DataBase config
+## The '127.0.0.1' direct to container host, you must change it when you run in docker.
+MYSQL_HOST=10.10.10.10
+MYSQL_PORT=3306
+MYSQL_DATABASE=polkacube
+MYSQL_USERNAME=develop
+MYSQL_PASSWORD=123456
+
+## Substrate Node Config
+## The '127.0.0.1' direct to container host, you must change it when you run in docker.
+SUBSTRATE_WS_HOST=10.10.10.10
+SUBSTRATE_WS_PORT=9944
+# ==========================
+
+docker run -d -p 7001:7001 -v [HOST_PATH]/.env:/src/.env hashquarkio/polkacube_backend
 ```
 
 ## List of dependencies
