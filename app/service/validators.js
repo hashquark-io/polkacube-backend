@@ -20,6 +20,15 @@ class ValidatorsService extends Service {
     // find the last block
     const blocks = await this.app.mysql.query('select * from ksm_author order by id desc');
     const validatorsMap = new Map(validators.map(validator => {
+      const identity = JSON.parse(validator.validatorName);
+      const model = {};
+      const identityKes = Object.keys(identity);
+      identityKes.forEach(item => {
+        if (identity[item] && identity[item].length > 0) {
+          model[item] = identity[item];
+        }
+      });
+      validator.validatorName = model;
       if (validator.nominators) {
         validator.nominators = JSON.parse(validator.nominators);
         validator.nominatorsBonded = this._totalNominatorsBonded(validator.nominators);
@@ -40,6 +49,15 @@ class ValidatorsService extends Service {
     const validators = await this.app.mysql.query('select * from ksm_validator where validatorAddr = ? order by id desc limit 1', accountId);
     if (validators.length > 0) {
       const validator = validators[0];
+      const identity = JSON.parse(validator.validatorName);
+      const model = {};
+      const identityKes = Object.keys(identity);
+      identityKes.forEach(item => {
+        if (identity[item] && identity[item].length > 0) {
+          model[item] = identity[item];
+        }
+      });
+      validator.validatorName = model;
       if (validator.nominators) {
         const nominators = JSON.parse(validator.nominators);
         validator.nominatorsBonded = this._totalNominatorsBonded(nominators);

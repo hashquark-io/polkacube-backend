@@ -7,12 +7,12 @@
         "declarations": true
     },
     "dependencies": {
-        "@polkadot/api": "^0.100.1",
+        "@polkadot/api": "^1.5.1",
         "egg": "^2.26.0",
         "egg-cors": "^2.2.3",
         "egg-mysql": "^3.0.0",
         "egg-socket.io": "^4.1.6",
-        "dotenv": "8.2.0"       
+        "dotenv": "8.2.0"
     },
     "devDependencies": {
         "cross-env": "^6.0.3",
@@ -20,7 +20,7 @@
         "egg-ci": "^1.11.0",
         "egg-mock": "^3.25.0",
         "egg-scripts": "^2.12.0",
-        "eslint": "^5.6.1",
+        "eslint": "^6.8.0",
         "eslint-config-egg": "^7.1.0"
     },
     "engines": {
@@ -40,9 +40,9 @@
         "version": "10"
     },
     "repository": {
-      "type": "git",
-      "url": "https://github.com/hashquark-io/polkacube-backend.git"
-    }, 
+        "type": "git",
+        "url": "https://github.com/hashquark-io/polkacube-backend.git"
+    },
     "author": "hashquark",
     "license": "Apache-2.0"
 }

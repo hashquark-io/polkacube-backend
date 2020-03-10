@@ -13,4 +13,8 @@ module.exports = app => {
   router.get('/api/v1/token', controller.token.getToken);
   router.get('/api/v1/token-validator', controller.token.getValidator);
   router.get('/api/v1/finalize-number', controller.token.getBestNumberFinalized);
+  router.get('/api/v1/identity/:accountId', controller.identity.getIdentity);
+  router.get('/api/v1/democracy/overview', controller.democracy.overview);
+  router.get('/api/v1/democracy/referendums', controller.democracy.referendums);
+  router.get('/api/v1/democracy/proposals', controller.democracy.proposals);
 };
