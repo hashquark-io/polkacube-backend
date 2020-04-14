@@ -1,10 +1,6 @@
 'use strict';
 const Service = require('egg').Service;
-const { formatBalance } = require('@polkadot/util');
-formatBalance.setDefaults({
-  decimals: 12,
-  unit: 'KSM',
-});
+const { formatBalance } = require('../util.js');
 
 class SlashService extends Service {
 
@@ -21,19 +17,20 @@ class SlashService extends Service {
       return slash;
     }
     if (accountAddr) {
-      slash = await this.app.mysql.select('ksm_evt_slash', {
-        where: { accountAddr },
+      slash = await this.app.mysql.select('ksm_slash_era', {
+        where: { accountAddr, slashType: 1 },
         orders: [
-          [ 'height', 'desc' ],
+          [ 'currentEra', 'desc' ],
           [ 'index', 'desc' ],
         ],
         limit: +size,
         offset,
       });
     } else {
-      slash = await this.app.mysql.select('ksm_evt_slash', {
+      slash = await this.app.mysql.select('ksm_slash_era', {
+        where: { slashType: 1 },
         orders: [
-          [ 'height', 'desc' ],
+          [ 'currentEra', 'desc' ],
           [ 'index', 'desc' ],
         ],
         limit: +size,
@@ -61,10 +58,10 @@ class SlashService extends Service {
       return slash;
     }
     if (accountAddr) {
-      const sql = 'select sum(amount) amount,count(accountAddr) num,accountAddr,nickname from ksm_evt_slash where accountAddr=? GROUP BY accountAddr,nickname ORDER BY num DESC ';
+      const sql = 'select sum(amount) amount,count(accountAddr) num,accountAddr,nickname from ksm_slash_era where accountAddr=? and slashType= 1 GROUP BY accountAddr,nickname ORDER BY num DESC ';
       slash = await this.app.mysql.query(sql, [ accountAddr ]);
     } else {
-      const sql = 'select sum(amount) amount,count(accountAddr) num,accountAddr,nickname from ksm_evt_slash  GROUP BY accountAddr,nickname ORDER BY num DESC limit ?,?';
+      const sql = 'select sum(amount) amount,count(accountAddr) num,accountAddr,nickname from ksm_slash_era where  slashType= 1 GROUP BY accountAddr,nickname ORDER BY num DESC limit ?,?';
       slash = await this.app.mysql.query(sql, [ offset, +size ]);
     }
     slash = slash.map(obj => {

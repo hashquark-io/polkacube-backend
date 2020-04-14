@@ -1,9 +1,7 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-const { formatBalance } = require('@polkadot/util');
-
-formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
+const { formatBalance } = require('../util.js');
 
 class ValidatorsController extends Controller {
 

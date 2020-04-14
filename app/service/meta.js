@@ -1,7 +1,7 @@
 'use strict';
 
 const Service = require('egg').Service;
-const { formatBalance } = require('@polkadot/util');
+const { formatBalance } = require('../util.js');
 
 class MetaService extends Service {
 

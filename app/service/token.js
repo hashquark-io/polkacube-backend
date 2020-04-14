@@ -1,12 +1,6 @@
 'use strict';
 const Service = require('egg').Service;
-const { formatBalance } = require('@polkadot/util');
-
-
-formatBalance.setDefaults({
-  decimals: 12,
-  unit: 'KSM',
-});
+const { formatBalance } = require('../util.js');
 
 class TokenService extends Service {
 
@@ -32,18 +26,18 @@ class TokenService extends Service {
 
   async validator() {
     const apiPolka = this.app.api;
-    const [ info, overview ] = await Promise.all([
-      apiPolka.derive.session.info(),
+    const [ overview, progress ] = await Promise.all([
       apiPolka.derive.staking.overview(),
+      apiPolka.derive.session.progress(),
     ]);
-    this.app.logger.info(JSON.stringify(info));
+    this.app.logger.info('-================' + JSON.stringify(progress));
     const polkaModel = {
       maxValidator: overview.validatorCount,
       actualValidator: overview.validators.length,
-      eraProgress: info.eraProgress,
-      eraLength: info.eraLength,
-      sessionLength: info.sessionLength,
-      sessionProgress: info.sessionProgress,
+      eraProgress: progress.eraProgress,
+      eraLength: progress.eraLength,
+      sessionLength: progress.sessionLength,
+      sessionProgress: progress.sessionProgress,
     };
     return polkaModel;
   }

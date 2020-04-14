@@ -1,11 +1,7 @@
 'use strict';
 const Service = require('egg').Service;
 
-const { formatBalance } = require('@polkadot/util');
-formatBalance.setDefaults({
-  decimals: 12,
-  unit: 'KSM',
-});
+const { formatBalance } = require('../util.js');
 
 class RewardService extends Service {
 
@@ -18,17 +14,15 @@ class RewardService extends Service {
     if (isNaN(offset)) {
       return reward;
     }
-    reward = await this.app.mysql.select('ksm_evt_reward', {
+    reward = await this.app.mysql.select('ksm_rewards_era', {
       orders: [
-        [ 'height', 'desc' ],
-        [ 'index', 'desc' ],
+        [ 'currentEra', 'desc' ],
       ],
       limit: +size,
       offset,
     });
     reward = reward.map(obj => {
-      obj.validatorsAmount = formatBalance(obj.validatorsAmount);
-      obj.treasuryAmount = formatBalance(obj.treasuryAmount);
+      obj.amount = formatBalance(obj.amount);
       return obj;
     });
     return reward;

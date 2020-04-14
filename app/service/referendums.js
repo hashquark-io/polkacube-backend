@@ -9,51 +9,31 @@ class ReferendumsService extends Service {
     const result = await this.app.api.derive.democracy.referendums();
     const referendums = [];
     for (const obj of result) {
-      const referendum = await this.votesFor(obj.index);
+      const referendum = this._votesFor(obj);
       referendum.index = obj.index;
-      referendum.hash = obj.hash.toString();
-      if (obj.proposal && obj.proposal.callIndex) {
-        referendum.detail = await this.service.meta.findMetaCall(obj.proposal.callIndex, obj.proposal.args);
+      referendum.hash = obj.imageHash;
+      if (obj.image.proposal && obj.image.proposal.callIndex) {
+        referendum.detail = await this.service.meta.findMetaCall(obj.image.proposal.callIndex, obj.image.proposal.args);
       }
-      referendum.enactBlock = obj.info.end.add(obj.info.delay).toNumber();
-      referendum.remainingBlocks = obj.info.end.sub(bestNumber).subn(1).toNumber();
+      referendum.enactBlock = obj.status.end.add(obj.status.delay).toNumber();
+      referendum.remainingBlocks = obj.status.end.sub(bestNumber).subn(1).toNumber();
       referendums.push(referendum);
     }
     return referendums;
   }
 
-  async votesFor(idNumber) {
-    const votesFor = await this.app.api.derive.democracy.referendumVotesFor(idNumber);
-    let voteCount = 0;
-    let voteCountAye = 0;
-    let voteCountNay = 0;
-    let votedBalanceAye = new BN(0);
-    let votedBalanceNay = new BN(0);
-    let votedBalanceTotal = new BN(0);
-    votesFor.forEach(({ balance, vote }) => {
-      const isDefault = vote.conviction.index === 0;
-      const countedBalance = balance
-        .muln(isDefault ? 1 : vote.conviction.index)
-        .divn(isDefault ? 10 : 1);
-
-      if (vote.isAye) {
-        voteCountAye++;
-        votedBalanceAye = votedBalanceAye.add(countedBalance);
-      } else {
-        voteCountNay++;
-        votedBalanceNay = votedBalanceNay.add(countedBalance);
-      }
-
-      voteCount++;
-      votedBalanceTotal = votedBalanceTotal.add(countedBalance);
-    });
+  _votesFor(obj) {
+    this.app.logger.debug(obj);
     const result = {};
-    result.voteCount = voteCount;
-    result.voteCountAye = voteCountAye;
-    result.voteCountNay = voteCountNay;
-    result.votedBalanceAye = votedBalanceAye;
-    result.votedBalanceNay = votedBalanceNay;
-    result.votedBalanceTotal = votedBalanceTotal;
+    result.voteCount = obj.voteCountAye + obj.voteCountNay;
+    result.voteCountAye = obj.voteCountAye;
+    result.voteCountNay = obj.voteCountNay;
+    result.votedBalanceAye = obj.votedAye;
+    result.votedBalanceNay = obj.votedNay;
+    result.votedBalanceTotal = new BN(obj.votedAye).add(new BN(obj.votedNay));
+    result.allAye = obj.allAye.map(({ accountId }) => accountId);
+    result.allNay = obj.allNay.map(({ accountId }) => accountId);
+    result.isPassing = obj.isPassing;
     return result;
   }
 }

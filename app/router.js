@@ -17,4 +17,8 @@ module.exports = app => {
   router.get('/api/v1/democracy/overview', controller.democracy.overview);
   router.get('/api/v1/democracy/referendums', controller.democracy.referendums);
   router.get('/api/v1/democracy/proposals', controller.democracy.proposals);
+  router.get('/api/v1/nomination/:num', controller.bondedModel.forecastReward);
+  router.get('/api/v1/node/:num', controller.bondedModel.buildNodes);
+  router.get('/api/v1/slash-reward', controller.statistics.getValidatorSlashReward);
+  router.get('/api/v1/point/:accountId', controller.point.pointQuery);
 };

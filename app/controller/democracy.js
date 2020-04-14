@@ -1,19 +1,17 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-const { formatNumber, formatBalance } = require('@polkadot/util');
+const { formatNumber, formatBalance } = require('../util.js');
 // 10^12
 const DOT_UNIT = 1000000000000;
-
-formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
 
 class DemocracyController extends Controller {
 
   async overview() {
     const { ctx } = this;
-    const [proposals, referendums, progress] = await Promise.all([ctx.service.democracy.overviewOfProposals(),
-    ctx.service.democracy.overviewOfReferendums(),
-    ctx.service.democracy.overviewOfProgress(),
+    const [ proposals, referendums, progress ] = await Promise.all([ ctx.service.democracy.overviewOfProposals(),
+      ctx.service.democracy.overviewOfReferendums(),
+      ctx.service.democracy.overviewOfProgress(),
     ]);
     proposals.proposalsFormat = formatNumber(proposals.proposals);
     proposals.totalProposalsFormat = formatNumber(proposals.totalProposals);
