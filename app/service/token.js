@@ -1,8 +1,12 @@
 'use strict';
 const Service = require('egg').Service;
-const { formatBalance } = require('../util.js');
 
 class TokenService extends Service {
+
+
+  _formatBalance(balance) {
+    return this.ctx.helper.formatBalance(balance);
+  }
 
   async excute() {
     const token = await this.app.mysql.select('ksm_token', {
@@ -13,11 +17,11 @@ class TokenService extends Service {
     });
     if (token && token.length > 0) {
       const polkaModel = {
-        totalIssuance: formatBalance(token[0].totalIssuance),
-        totalBond: formatBalance(token[0].totalBond),
+        totalIssuance: this._formatBalance(token[0].totalIssuance),
+        totalBond: this._formatBalance(token[0].totalBond),
         stakingRatio: token[0].stakingRatio,
         inflation: token[0].inflation,
-        valDayRewards: formatBalance(token[0].valDayRewards),
+        valDayRewards: this._formatBalance(token[0].valDayRewards),
       };
       return polkaModel;
     }

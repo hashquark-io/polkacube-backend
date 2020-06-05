@@ -7,7 +7,7 @@
         "declarations": true
     },
     "dependencies": {
-        "@polkadot/api": "^1.7.1",
+        "@polkadot/api": "^1.16.1",
         "dotenv": "8.2.0",
         "egg": "^2.26.0",
         "egg-cors": "^2.2.3",
@@ -19,7 +19,7 @@
         "egg-bin": "eggjs/egg-bin#deps/nyc",
         "egg-ci": "^1.11.0",
         "egg-mock": "^3.25.0",
-        "egg-scripts": "^2.12.0",
+        "egg-scripts": "^2.13.0",
         "eslint": "^6.8.0",
         "eslint-config-egg": "^8.0.1"
     },
@@ -28,13 +28,17 @@
     },
     "scripts": {
         "start": "egg-scripts start --sticky --title=server_polkacube --ignore-stderr",
-        "stop": "egg-scripts stop --title=server_polkacube",
-        "dev": "egg-bin dev --sticky",
+        "stop": "egg-scripts stop --title=server_polkacube",       
+        "dev": "egg-bin dev --sticky",  
+        "dev-mainnet": "egg-bin dev --port=7002 --sticky",          
+        "start-mainnet": "egg-scripts start --env=prod-mainnet --port=7002 --sticky  --title=server_polkacube_mainnet",
+        "stop-mainnet": "egg-scripts stop --title=server_polkacube_mainnet",           
         "debug": "egg-bin debug --inpsect=9229",
         "fix": "npm run lint -- --fix",
         "test": "egg-bin test",
         "cov": "egg-bin cov",
-        "lint": "eslint ."
+        "lint": "eslint .",
+        "autod": "autod"
     },
     "ci": {
         "version": "10"

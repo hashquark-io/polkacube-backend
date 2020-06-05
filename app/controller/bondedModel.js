@@ -1,11 +1,14 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-const { formatBalance } = require('../util.js');
 
 const DISPLAY_DECIMAL_NUM = 1000;
 
 class BondedModelController extends Controller {
+
+  _formatBalance(balance) {
+    return this.ctx.helper.formatBalance(balance);
+  }
 
   async buildNodes() {
     this.logger.debug(`params: ${this.ctx.params.num}`);
@@ -13,8 +16,8 @@ class BondedModelController extends Controller {
     this._validateNum(num);
     const myValidators = await this.ctx.service.node.calculate(num);
     if (myValidators && myValidators.dailyRevenue) {
-      myValidators.dailyRevenue = formatBalance(myValidators.dailyRevenue.toString());
-      myValidators.eraRevenue = formatBalance(myValidators.eraRevenue.toString());
+      myValidators.dailyRevenue = this._formatBalance(myValidators.dailyRevenue.toString());
+      myValidators.eraRevenue = this._formatBalance(myValidators.eraRevenue.toString());
     }
     this.ctx.body = myValidators;
   }
@@ -27,14 +30,14 @@ class BondedModelController extends Controller {
     const compare = (a, b) => { return b.dailyRevenue - a.dailyRevenue; };
     if (myNomination && myNomination.dailyRevenue) {
       myNomination.validatorList.sort(compare);
-      myNomination.dailyRevenue = formatBalance(myNomination.dailyRevenue.toString());
+      myNomination.dailyRevenue = this._formatBalance(myNomination.dailyRevenue.toString());
       myNomination.validatorList.forEach(validator => {
-        validator.totalBonded = formatBalance(validator.totalBonded.toString());
-        validator.nominationBonded = formatBalance(validator.nominationBonded.toString());
-        validator.selfBonded = formatBalance(validator.selfBonded.toString());
+        validator.totalBonded = this._formatBalance(validator.totalBonded.toString());
+        validator.nominationBonded = this._formatBalance(validator.nominationBonded.toString());
+        validator.selfBonded = this._formatBalance(validator.selfBonded.toString());
         validator.commission = (parseFloat(validator.commission) * 100).toFixed(2) + '%';
-        validator.eraRevenue = formatBalance(validator.eraRevenue.toString());
-        validator.dailyRevenue = formatBalance(validator.dailyRevenue.toString());
+        validator.eraRevenue = this._formatBalance(validator.eraRevenue.toString());
+        validator.dailyRevenue = this._formatBalance(validator.dailyRevenue.toString());
       });
     }
     this.ctx.body = myNomination;

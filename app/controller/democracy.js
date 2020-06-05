@@ -1,11 +1,18 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-const { formatNumber, formatBalance } = require('../util.js');
 // 10^12
 const DOT_UNIT = 1000000000000;
 
 class DemocracyController extends Controller {
+
+  _formatBalance(balance) {
+    return this.ctx.helper.formatBalance(balance);
+  }
+
+  _formatNumber(num) {
+    return this.ctx.helper.formatNumber(num);
+  }
 
   async overview() {
     const { ctx } = this;
@@ -13,14 +20,14 @@ class DemocracyController extends Controller {
       ctx.service.democracy.overviewOfReferendums(),
       ctx.service.democracy.overviewOfProgress(),
     ]);
-    proposals.proposalsFormat = formatNumber(proposals.proposals);
-    proposals.totalProposalsFormat = formatNumber(proposals.totalProposals);
+    proposals.proposalsFormat = this._formatNumber(proposals.proposals);
+    proposals.totalProposalsFormat = this._formatNumber(proposals.totalProposals);
 
-    referendums.referendumCountFormat = formatNumber(referendums.referendumCount);
-    referendums.totalReferendumCountFormat = formatNumber(referendums.totalReferendumCount);
+    referendums.referendumCountFormat = this._formatNumber(referendums.referendumCount);
+    referendums.totalReferendumCountFormat = this._formatNumber(referendums.totalReferendumCount);
 
-    progress.progressFormat = formatNumber(progress.progress);
-    progress.launchPeriodFormat = formatNumber(progress.launchPeriod);
+    progress.progressFormat = this._formatNumber(progress.progress);
+    progress.launchPeriodFormat = this._formatNumber(progress.launchPeriod);
 
     const res = {};
     Object.assign(res, proposals, referendums, progress);
@@ -31,8 +38,8 @@ class DemocracyController extends Controller {
     const { ctx } = this;
     const result = await ctx.service.referendums.list();
     const res = result.map(referendum => {
-      referendum.enactBlockFormat = formatNumber(referendum.enactBlock);
-      referendum.remainingBlocksFormat = formatNumber(referendum.remainingBlocks);
+      referendum.enactBlockFormat = this._formatNumber(referendum.enactBlock);
+      referendum.remainingBlocksFormat = this._formatNumber(referendum.remainingBlocks);
       referendum.votedBalanceAyeFormat = this._formatBalance(referendum.votedBalanceAye);
       referendum.votedBalanceAye = referendum.votedBalanceAye / DOT_UNIT;
       referendum.votedBalanceNayFormat = this._formatBalance(referendum.votedBalanceNay);
@@ -53,11 +60,6 @@ class DemocracyController extends Controller {
       res.push(proposal);
     }
     ctx.body = res;
-  }
-
-  _formatBalance(value) {
-    const format = formatBalance(value);
-    return format === '0' ? '0 KSM' : format;
   }
 
 }

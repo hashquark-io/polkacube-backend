@@ -75,6 +75,8 @@ MYSQL_PASSWORD=123456
 ## The '127.0.0.1' direct to container host, you must change it when you run in docker.
 SUBSTRATE_WS_HOST=10.10.10.10
 SUBSTRATE_WS_PORT=9944
+## KSM is used for KUSAMA balance support. 
+SUBSTRATE_UNIT=KSM
 # ==========================
 
 docker run -d -p 7001:7001 -v [HOST_PATH]/.env:/src/.env hashquarkio/polkacube_backend

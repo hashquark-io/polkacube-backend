@@ -28,7 +28,14 @@ describe('test/app/service/validators.test.js', () => {
       const validator = yield ctx.service.validators.findByAccountId('GiBnzCGFofhmAvsUv9FUShUb8YJYYwWex3ThQNkbDDNprS6');
       assert(validator);
     });
+  });
 
+  describe('stashes()', () => {
+    it('should get stashes', function* () {
+      const ctx = app.mockContext();
+      const validator = yield ctx.service.validators.stashes();
+      assert(validator);
+    });
   });
 });
 

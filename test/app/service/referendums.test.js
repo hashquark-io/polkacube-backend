@@ -18,5 +18,6 @@ describe('test/app/service/referendums.test.js', () => {
       assert(referendums);
     });
   });
+
 });
 

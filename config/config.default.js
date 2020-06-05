@@ -8,6 +8,7 @@ require('dotenv').config('../.env');
 const ksm = {
   // The '127.0.0.1' or 'localhost' direct to container host, you must change it when you run in docker.
   ws: 'ws://' + (process.env.SUBSTRATE_WS_HOST || '127.0.0.1') + ':' + (process.env.SUBSTRATE_WS_PORT || '9944'),
+  unit: process.env.SUBSTRATE_UNIT || 'KSM',  
 };
 
 // logger

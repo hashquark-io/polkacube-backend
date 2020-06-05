@@ -28,6 +28,7 @@ class ValidatorsService extends Service {
           model[item] = identity[item];
         }
       });
+
       validator.validatorName = model;
       if (validator.nominators) {
         validator.nominators = JSON.parse(validator.nominators);
@@ -57,6 +58,7 @@ class ValidatorsService extends Service {
           model[item] = identity[item];
         }
       });
+
       validator.validatorName = model;
       if (validator.nominators) {
         const nominators = JSON.parse(validator.nominators);
@@ -72,6 +74,25 @@ class ValidatorsService extends Service {
       }
       return validator;
     }
+  }
+
+  async stashes() {
+    let stasheList = await this.app.mysql.query('select validatorAddr,validatorName from ksm_stashes where height=(select max(height) from ksm_stashes)');
+    if (stasheList.length > 0) {
+      stasheList = stasheList.map(validator => {
+        const identity = JSON.parse(validator.validatorName);
+        const model = {};
+        const identityKes = Object.keys(identity);
+        identityKes.forEach(item => {
+          if (identity[item] && identity[item].length > 0) {
+            model[item] = identity[item];
+          }
+        });
+        validator.validatorName = model;
+        return validator;
+      });
+    }
+    return stasheList;
   }
 
 }

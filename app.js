@@ -1,5 +1,4 @@
 'use strict';
-
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 
 class AppBootHook {

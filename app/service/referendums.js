@@ -12,7 +12,7 @@ class ReferendumsService extends Service {
       const referendum = this._votesFor(obj);
       referendum.index = obj.index;
       referendum.hash = obj.imageHash;
-      if (obj.image.proposal && obj.image.proposal.callIndex) {
+      if (obj.image && obj.image.proposal && obj.image.proposal.callIndex) {
         referendum.detail = await this.service.meta.findMetaCall(obj.image.proposal.callIndex, obj.image.proposal.args);
       }
       referendum.enactBlock = obj.status.end.add(obj.status.delay).toNumber();

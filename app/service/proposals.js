@@ -13,9 +13,9 @@ class ProposalsService extends Service {
       proposal.identity = await this.service.identity.findIdentity(proposal.proposer);
       proposal.balance = obj.balance;
       proposal.seconds = obj.seconds.filter(value => value.toString() !== proposal.proposer);
-      proposal.hash = obj.hash.toString();
-      if (obj.proposal && obj.proposal.callIndex) {
-        proposal.detail = await this.service.meta.findMetaCall(obj.proposal.callIndex, obj.proposal.args);
+      proposal.hash = obj.imageHash;
+      if (obj.image && obj.image.proposal && obj.image.proposal.callIndex) {
+        proposal.detail = await this.service.meta.findMetaCall(obj.image.proposal.callIndex, obj.image.proposal.args);
       }
       proposals.push(proposal);
     }

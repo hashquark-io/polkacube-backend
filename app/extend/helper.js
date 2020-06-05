@@ -3,13 +3,14 @@
 const { formatNumber, formatBalance } = require('@polkadot/util');
 const BN = require('bn.js');
 
-formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
 
 const util = {};
 
 util.formatBalance = function(balance) {
+  const unit = this.app.config.ksm.unit;
+  formatBalance.setDefaults({ decimals: 12, unit });
   const format = formatBalance(balance, { forceUnit: '-' });
-  return format === '0' ? '0 KSM' : format;
+  return format === '0' ? ('0 ' + unit) : format;
 };
 
 util.formatNumber = function(num) {

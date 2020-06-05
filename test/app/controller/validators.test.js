@@ -17,5 +17,10 @@ describe('test/app/controller/validators.test.js', () => {
       .expect(200);
     assert(result.body.id > 0);
   });
-
+  it('should GET stashes', async () => {
+    const result = await app.httpRequest()
+      .get('/api/v1/validators/stashes')
+      .expect(200);
+    assert(result.body.length >= 0);
+  });
 });

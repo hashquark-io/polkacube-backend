@@ -1,9 +1,11 @@
 'use strict';
 const Service = require('egg').Service;
 
-const { formatBalance } = require('../util.js');
-
 class RewardService extends Service {
+
+  _formatBalance(balance) {
+    return this.ctx.helper.formatBalance(balance);
+  }
 
   async find(page, size) {
     size = size || 100;
@@ -22,7 +24,7 @@ class RewardService extends Service {
       offset,
     });
     reward = reward.map(obj => {
-      obj.amount = formatBalance(obj.amount);
+      obj.amount = this._formatBalance(obj.amount);
       return obj;
     });
     return reward;

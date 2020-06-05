@@ -1,9 +1,12 @@
 'use strict';
 
 const Service = require('egg').Service;
-const { formatBalance } = require('../util.js');
 
 class MetaService extends Service {
+
+  _formatBalance(balance) {
+    return this.ctx.helper.formatBalance(balance);
+  }
 
   async findMetaCall(callIndex, args) {
     const detail = {};
@@ -19,7 +22,7 @@ class MetaService extends Service {
       obj.type = arg.type.toString();
       obj.value = args[index].toString();
       if (obj.type === 'Compact<Balance>') {
-        obj.value = formatBalance(obj.value);
+        obj.value = this._formatBalance(obj.value);
         if (obj.value === '0') {
           obj.value = '0 KSM';
         }

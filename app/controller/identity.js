@@ -8,9 +8,7 @@ class IdentityController extends Controller {
     this.logger.debug(`params: ${this.ctx.params.accountId}`);
     const accountId = this.ctx.params.accountId;
     const identity = await this.ctx.service.identity.findIdentity(accountId);
-    if (identity) {
-      this.ctx.body = identity;
-    }
+    this.ctx.body = identity;
   }
 
 }
