@@ -7,9 +7,9 @@
         "declarations": true
     },
     "dependencies": {
-        "@polkadot/api": "^1.16.1",
+        "@polkadot/api": "^1.23.1",
         "dotenv": "8.2.0",
-        "egg": "^2.26.0",
+        "egg": "^2.27.0",
         "egg-cors": "^2.2.3",
         "egg-mysql": "^3.0.0",
         "egg-socket.io": "^4.1.6"
@@ -28,11 +28,11 @@
     },
     "scripts": {
         "start": "egg-scripts start --sticky --title=server_polkacube --ignore-stderr",
-        "stop": "egg-scripts stop --title=server_polkacube",       
-        "dev": "egg-bin dev --sticky",  
-        "dev-mainnet": "egg-bin dev --port=7002 --sticky",          
+        "stop": "egg-scripts stop --title=server_polkacube",
+        "dev": "egg-bin dev --sticky",
+        "dev-mainnet": "egg-bin dev --port=7002 --sticky",
         "start-mainnet": "egg-scripts start --env=prod-mainnet --port=7002 --sticky  --title=server_polkacube_mainnet",
-        "stop-mainnet": "egg-scripts stop --title=server_polkacube_mainnet",           
+        "stop-mainnet": "egg-scripts stop --title=server_polkacube_mainnet",
         "debug": "egg-bin debug --inpsect=9229",
         "fix": "npm run lint -- --fix",
         "test": "egg-bin test",
