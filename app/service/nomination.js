@@ -88,10 +88,10 @@ class NominationService extends Service {
     myNomination.validatorList = validatorsResult;
     myNomination.currentEraLength = overview.eraLength || MAX_ERA_NUM;
     const validatorCount = await this.app.mysql.query('select count(1) as count from ksm_validator where currentSession = (select currentSession from ksm_validator order by id desc limit 1)');
-    const eraRevenue = await this.app.mysql.query('select validatorsAmount from ksm_evt_reward order by id desc limit 1');
+    const eraRevenue = await this.app.mysql.query('select amount from ksm_rewards_era order by id desc limit 1');
     if (total > 0 && validatorCount.length > 0 && eraRevenue.length > 0 && myNomination.validatorList.length > 0) {
       // calculate each validator reward for one era
-      const eraValidatorRevenue = this._roundNum(eraRevenue[0].validatorsAmount / DOT_UNIT / validatorCount[0].count);
+      const eraValidatorRevenue = this._roundNum(eraRevenue[0].amount / DOT_UNIT / validatorCount[0].count);
       // convert to daily blocks
       const dailyEraAmount = 14400 / myNomination.currentEraLength;
       myNomination.dailyRevenue = 0;

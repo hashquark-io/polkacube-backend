@@ -60,13 +60,13 @@ class NodeService extends Service {
     console.log(myValidators.averageBonded * myValidators.totalNumber);
     // 4. Aggregate revenues
     myValidators.currentEraLength = overview.eraLength || MAX_ERA_NUM;
-    const eraRevenue = await this.app.mysql.query('select validatorsAmount from ksm_evt_reward order by id desc limit 1');
+    const eraRevenue = await this.app.mysql.query('select amount from ksm_rewards_era order by id desc limit 1');
     if (eraRevenue.length > 0 && myValidators.totalNumber > 0) {
       // convert to daily blocks
       const dailyEraAmount = 14400 / myValidators.currentEraLength;
       // calculate each validator reward for one era
       myValidators.currentValidatorCount = validatorCount;
-      const eraValidatorRevenue = this._roundNum(eraRevenue[0].validatorsAmount / validatorCount);
+      const eraValidatorRevenue = this._roundNum(eraRevenue[0].amount / validatorCount);
       myValidators.eraRevenue = Math.round(eraValidatorRevenue * myValidators.totalNumber);
       myValidators.dailyRevenue = Math.round(myValidators.eraRevenue * dailyEraAmount);
       myValidators.annualRate = Math.round(myValidators.dailyRevenue / DOT_UNIT / num * 365 * 10000) / 100 + '%';
